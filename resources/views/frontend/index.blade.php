@@ -45,7 +45,7 @@ active
 @include('frontend.includes.featured_area')
 <!-- featured-area end -->
 <!-- start count-down-section -->
-<div class="count-down-area count-down-area-sub">
+{{-- <div class="count-down-area count-down-area-sub">
     <section class="count-down-section section-padding parallax" data-speed="7">
         <div class="container">
             <div class="row">
@@ -64,7 +64,7 @@ active
         </div>
         <!-- end container -->
     </section>
-</div>
+</div> --}}
 <!-- end count-down-section -->
 <!-- product-area start -->
 <div class="product-area product-area-2">
@@ -90,8 +90,7 @@ active
                             <ul>
                                 <li><a data-toggle="modal" data-target="#exampleModalCenter"
                                         href="{{ route('product_details',$best_seller_product->slug) }}"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                                <li><a onclick="addToCart({{ $best_seller_product->id }})"><i class="fa fa-shopping-bag"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -137,8 +136,7 @@ active
                             <ul>
                                 <li><a data-toggle="modal" data-target="#exampleModalCenter"
                                         href="{{ route('product_details',$product->slug) }}"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                                <li><a onclick="addToCart({{ $product->id }})"><i class="fa fa-shopping-bag"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -198,4 +196,36 @@ active
 </div>
 <!-- testmonial-area end -->
 
+@endsection
+
+
+@section('script')
+    <script>
+        function addToCart(id) {
+            //ajax setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //ajax response start
+            $.ajax({
+                type: 'POST',
+                url: '/add/cart/ajax/'+id,
+                data: {
+                    product_quantity: 1
+                },
+                success: function (data) {
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Added to cart successfully!'
+                    })
+                    $('#cart_count').text(data[0]);
+                    $('#cart_content').html(data[1]);
+                }
+            });
+            //ajax response stop
+        }
+    </script>
 @endsection

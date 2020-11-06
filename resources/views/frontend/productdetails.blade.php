@@ -65,14 +65,18 @@
                     </div>
                     <p>{{$product_info->product_short_description}}</p>
                     <ul class="input-style">
-                        <form method="post" action="{{route('add_cart',$product_info->id)}}">
+                        {{-- <form method="post" action="{{route('add_cart',$product_info->id)}}">
                             @csrf
 
                             <li class="quantity cart-plus-minus">
                                 <input type="text" value="1" name="product_quantity" />
                             </li>
                             <li><button class="btn btn-danger" type="submit">Add to Cart</button></li>
-                        </form>
+                        </form> --}}
+                        <li class="quantity cart-plus-minus">
+                            <input id="product_quantity" type="text" value="1" name="product_quantity" />
+                        </li>
+                        <li><button id="addToCartBtn" class="btn btn-danger" type="submit">Add to Cart</button></li>
                     </ul>
                     <ul class="cetagory">
                         <li>Categories:</li>
@@ -243,8 +247,7 @@
                             </div>
                             <div class="col-5 text-right">
                                 <ul>
-                                    <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
+                                    <li><a onclick="addToCart({{ $related_product->id }})"><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -260,5 +263,70 @@
     </div>
 </div>
 <!-- featured-product-area end -->
+
+@endsection
+
+
+@section('script')
+
+<script>
+    $(document).ready(function (){
+        $('#addToCartBtn').click(function () {
+            const product_quantity = $('#product_quantity').val();
+
+            //ajax setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //ajax response start
+            $.ajax({
+                type: 'POST',
+                url: '/add/cart/ajax/{{$product_info->id}}',
+                data: {
+                    product_quantity: product_quantity
+                },
+                success: function (data) {
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Added to cart successfully!'
+                    })
+                    $('#cart_count').text(data[0]);
+                    $('#cart_content').html(data[1]);
+                }
+            });
+            //ajax response stop
+        });
+    });
+
+    function addToCart(id) {
+            //ajax setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //ajax response start
+            $.ajax({
+                type: 'POST',
+                url: '/add/cart/ajax/'+id,
+                data: {
+                    product_quantity: 1
+                },
+                success: function (data) {
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Added to cart successfully!'
+                    })
+                    $('#cart_count').text(data[0]);
+                    $('#cart_content').html(data[1]);
+                }
+            });
+            //ajax response stop
+        }
+</script>
 
 @endsection

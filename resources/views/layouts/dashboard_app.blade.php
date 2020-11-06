@@ -52,7 +52,7 @@
 <body>
 
     <!-- ########## START: LEFT PANEL ########## -->
-    <div class="sl-logo"><a href=""><i class="icon ion-android-star-outline"></i> {{env('APP_NAME')}}</a></div>
+    <div class="sl-logo"><a href="{{ url('/') }}"><i class="icon ion-android-star-outline"></i> MyCommerce</a></div>
     <div class="sl-sideleft">
         <div class="input-group input-group-search">
             <input type="search" name="search" class="form-control" placeholder="Search">

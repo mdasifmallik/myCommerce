@@ -125,13 +125,13 @@
                         <ul class="search-cart-wrapper d-flex">
                             <li class="search-tigger"><a href="javascript:void(0);"><i class="flaticon-search"></i></a>
                             </li>
-                            <li class="search-tigger"><a href="javascript:void(0);"><i class="flaticon-like"></i>
+                            {{-- <li class="search-tigger"><a href="javascript:void(0);"><i class="flaticon-like"></i>
                                     <span>2</span></a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="javascript:void(0);"><i class="flaticon-shop"></i>
-                                    <span>{{cart_count()}}</span></a>
-                                <ul class="cart-wrap dropdown_style">
+                                    <span id="cart_count">{{cart_count()}}</span></a>
+                                <ul id="cart_content" class="cart-wrap dropdown_style">
                                     @php
                                     $subtotol = 0;
                                     @endphp
@@ -156,7 +156,7 @@
                                     $subtotol += $cart_item->product->product_price * $cart_item->product_quantity;
                                     @endphp
                                     @endforeach
-                                    <li>Subtotol: <span class="pull-right">${{$subtotol}}</span></li>
+                                    <li>Subtotol: <span id="cart_total" class="pull-right">${{$subtotol}}</span></li>
                                     <li>
                                         <a class="btn btn-danger" href="{{route('cart.index')}}">Check Out</a>
                                     </li>
@@ -233,16 +233,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    @if ($errors->any())
-                    <script>window.location.hash = '#newsletter_section';</script>
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
+                    @error('newsletter_email')
+                        <script>window.location.hash = '#newsletter_section';</script>
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                     @if (session('success_message'))
                     <div class="alert alert-success" role="alert">
                         <h4 class="alert-heading">{{ session('success_message') }}</h4>
@@ -253,7 +247,7 @@
                         <div class="newsletter-form">
                             <form method="post" action="{{ route('newsletter_subscriber.store') }}">
                                 @csrf
-                                <input type="email" name="email" class="form-control"
+                                <input type="email" name="newsletter_email" class="form-control"
                                     placeholder="Enter Your Email Address...">
                                 <button type="submit"><i class="fa fa-send"></i></button>
                             </form>
@@ -407,6 +401,23 @@
 
     <!-- select2 css -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+    <!-- sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
+    </script>
 
     @yield('script')
 </body>

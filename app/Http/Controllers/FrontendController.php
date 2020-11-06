@@ -57,10 +57,12 @@ class FrontendController extends Controller
         $related_products = $product_info->category->products;
         $order_detail_id = null;
 
-        if ($order_details = Auth::user()->order_details->where('product_id', $product_info->id)->whereNull('review')) {
-            foreach ($order_details as $order_detail) {
-                if ($order_detail->order->payment_status == 2) {
-                    $order_detail_id = $order_detail->id;
+        if (Auth::user()) {
+            if ($order_details = Auth::user()->order_details->where('product_id', $product_info->id)->whereNull('review')) {
+                foreach ($order_details as $order_detail) {
+                    if ($order_detail->order->payment_status == 2) {
+                        $order_detail_id = $order_detail->id;
+                    }
                 }
             }
         }
@@ -126,7 +128,7 @@ class FrontendController extends Controller
     public function customerregisterpost(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:8',
         ]);
 

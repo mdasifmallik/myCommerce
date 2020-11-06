@@ -85,6 +85,7 @@ Route::resource('blog', 'BlogController');
 
 //Cart Controller Routes
 Route::post('/add/cart/{id}', 'CartController@add_cart')->name('add_cart');
+Route::post('/add/cart/ajax/{id}', 'CartController@add_cart_ajax')->name('add_cart_ajax');
 Route::get('/cart_main', 'CartController@cart_index')->name('cart.index');
 Route::get('/cart_main/{coupon_name}', 'CartController@cart_index');
 Route::get('/cart/remove/{id}', 'CartController@cart_remove')->name('cart.remove');

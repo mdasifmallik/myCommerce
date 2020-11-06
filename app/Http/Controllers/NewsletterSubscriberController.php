@@ -37,10 +37,12 @@ class NewsletterSubscriberController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'email' => 'required|email|unique:newsletter_subscribers,email'
+            'newsletter_email' => 'required|email|unique:newsletter_subscribers,email'
         ]);
 
-        Newsletter_subscriber::create($validatedData);
+        Newsletter_subscriber::create([
+            'email' => $request->newsletter_email
+        ]);
 
         $request->session()->flash('success_message', 'Subscribed successfully for Newsletter!');
 
