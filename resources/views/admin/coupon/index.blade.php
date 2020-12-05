@@ -62,7 +62,7 @@ active
                                             <th scope="row">{{ $loop->index+1 }}</th>
                                             <td>{{ $coupon->coupon_name }}</td>
                                             <td>{{ App\User::findOrFail($coupon->added_by)->name }}</td>
-                                            <td>{{ $coupon->discount_amount }}</td>
+                                            <td>{{ $coupon->discount_amount }}%</td>
                                             <td>{{ $coupon->minimum_purchase_amount }}</td>
                                             <td>{{ $coupon->validity_till }}</td>
                                             <td>

@@ -1,4 +1,3 @@
-
 @extends('layouts.dashboard_app')
 
 
@@ -39,16 +38,19 @@ active
                             </div>
                             @endif
 
-                            <form method="post" action="{{ route('product.update',$product->id) }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('product.update',$product->id) }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
                                     <label>Product Category:</label>
                                     <select id="" class="form-control" name="category_id">
-                                    	<option value="">-Select-One-</option>
-                                    	@foreach($active_categories as $active_category)
-                                    		<option {{ ($active_category->id == $product->category_id) ? "selected" : "" }} value="{{$active_category->id}}">{{$active_category->category_name}}</option>
-                                    	@endforeach
+                                        <option value="">-Select-One-</option>
+                                        @foreach($active_categories as $active_category)
+                                        <option {{ ($active_category->id == $product->category_id) ? "selected" : "" }}
+                                            value="{{$active_category->id}}">{{$active_category->category_name}}
+                                        </option>
+                                        @endforeach
                                     </select>
                                     @error('category_id')
                                     <span class="text-danger">{{$message}}</span>
@@ -56,68 +58,84 @@ active
                                 </div>
                                 <div class="form-group">
                                     <label>Product Name:</label>
-                                    <input type="text" class="form-control" placeholder="Enter Product Name" name="product_name" value="{{ $product->product_name }}">
+                                    <input type="text" class="form-control" placeholder="Enter Product Name"
+                                        name="product_name" value="{{ $product->product_name }}">
                                     @error('product_name')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Product Short Description:</label>
-                                    <input type="text" class="form-control" placeholder="Enter Product Description" name="product_short_description" value="{{ $product->product_short_description }}">
+                                    <input type="text" class="form-control" placeholder="Enter Product Description"
+                                        name="product_short_description"
+                                        value="{{ $product->product_short_description }}">
                                     @error('product_short_description')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Product Long Description:</label>
-                                    <textarea class="form-control" name="product_long_description" rows="3">{{ $product->product_long_description }}</textarea>
+                                    <textarea class="form-control" name="product_long_description"
+                                        rows="3">{{ $product->product_long_description }}</textarea>
                                     @error('product_long_description')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Product Price:</label>
-                                    <input type="text" class="form-control" placeholder="Enter Product Price" name="product_price" value="{{ $product->product_price }}">
+                                    <input type="text" class="form-control" placeholder="Enter Product Price"
+                                        name="product_price" value="{{ $product->product_price }}">
                                     @error('product_price')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Product Quantity:</label>
-                                    <input type="text" class="form-control" placeholder="Enter Product Quantity" name="product_quantity" value="{{ $product->product_quantity }}">
+                                    <input type="text" class="form-control" placeholder="Enter Product Quantity"
+                                        name="product_quantity" value="{{ $product->product_quantity }}">
                                     @error('product_quantity')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Alert Quantity:</label>
-                                    <input type="text" class="form-control" placeholder="Enter Alert Quantity" name="product_alert_quantity" value="{{ $product->product_alert_quantity }}">
+                                    <input type="text" class="form-control" placeholder="Enter Alert Quantity"
+                                        name="product_alert_quantity" value="{{ $product->product_alert_quantity }}">
                                     @error('product_alert_quantity')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
-                                <div class="well" data-bind="fileDrag: fileData">
-				    				<div class="form-group">
-				        				<div class="">
-				            				<img style="height: 125px;" class="img-rounded  thumb" data-bind="attr: { src: fileData().dataURL }, visible: fileData().dataURL">
-				            				<div data-bind="ifnot: fileData().dataURL">
-				                				<label class="drag-label">Drag Product Photo here</label>
-				            				</div>
-				        				</div>
-			        					<div class="mg-t-40">
-				            				<input type="file" name="product_photo" data-bind="fileInput: fileData, customFileInput: {
-				              				buttonClass: 'btn btn-success',
-				              				fileNameClass: 'disabled form-control',
-				              				onClear: onClear,
-				             				 onInvalidFileDrop: onInvalidFileDrop
-				            				}" accept="image/*">
-			        					</div>
-                                    </div>
-                                    @error('product_photo')
+                                <div class="form-group">
+                                    <label>Product Thumbnail Photo:</label>
+                                    <img class="img-fluid"
+                                        src="{{asset('uploads/product_photos/'.$product->product_thumbnail_photo)}}"
+                                        alt="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Change Thumbnail Photo:</label>
+                                    <input class="form-control" type="file" name="product_thumbnail_photo">
+                                    @error('product_thumbnail_photo')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
-								</div>
-                                <button type="submit" class="btn btn-primary">Edit</button>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block">Product Multiple Photos:</label>
+                                    @foreach ($product->product_images as $product_image)
+                                    <div class="item" style="width: 150px; display: inline-block">
+                                        <a href="{{ route('product.edit',$product_image->id) }}" style="float: right; color: red;"><i class="fa fa-times"></i></a>
+                                        <img class="img-fluid" src="{{asset('uploads/product_photos/'.$product_image->image_name)}}"
+                                            alt="">
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <div class="form-group">
+                                    label>Add More Photo:</label>
+                                    <input type="file" class="form-control" name="product_multiple_photo">
+                                    @error('product_multiple_photo')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </form>
                         </div>
                     </div>
@@ -135,35 +153,5 @@ active
 
 
 @section('script')
-	<script src='http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js'></script>
-	<script src='{{asset('knockout-file')}}/knockout-file-bindings.js'></script>
-	<script>
-	    var viewModel = {};
-	    viewModel.fileData = ko.observable({
-	        dataURL: ko.observable(),
-	        // can add "fileTypes" observable here, and it will override the "accept" attribute on the file input
-	        // fileTypes: ko.observable('.xlsx,image/png,audio/*')
-	    });
-	    viewModel.multiFileData = ko.observable({ dataURLArray: ko.observableArray() });
-	    viewModel.onClear = function (fileData) {
-	        if (confirm('Are you sure?')) {
-	            fileData.clear && fileData.clear();
-	        }
-	    };
-	    viewModel.debug = function () {
-	        window.viewModel = viewModel;
-	        console.log(ko.toJSON(viewModel));
-	        debugger;
-	    };
-	    viewModel.onInvalidFileDrop = function(failedFiles) {
-	        var fileNames = [];
-	        for (var i = 0; i < failedFiles.length; i++) {
-	            fileNames.push(failedFiles[i].name);
-	        }
-	        var message = 'Invalid file type: ' + fileNames.join(', ');
-	        alert(message)
-	        console.error(message);
-	    };
-	    ko.applyBindings(viewModel);
-	</script>
+
 @endsection

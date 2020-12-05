@@ -132,7 +132,7 @@ class CheckoutController extends Controller
             session(['order_id_from_checkout_page' => $order_id]);
             return redirect('/stripe');
         } else {
-            return redirect('/cart_main');
+            return redirect('/customer/home');
         }
     }
 

@@ -112,10 +112,15 @@ Route::get('/test/mail', 'CheckoutController@testMail');
 Route::get('contact/info', 'ContactinfoController@index')->name('contactinfo');
 Route::post('contact/info/update', 'ContactinfoController@update_contactinfo')->name('update_contactinfo');
 
+//About Page
+Route::get('about', function () {
+    return view('about');
+});
 
 
 
-Auth::routes(['verify' => true]);
+
+Auth::routes(['verify' => false]);
 
 Route::get('register', function () {
     return redirect('/customer/register');

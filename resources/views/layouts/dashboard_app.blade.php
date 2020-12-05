@@ -153,20 +153,7 @@
             </a><!-- sl-menu-link -->
             @endif
 
-            <a href="#" class="sl-menu-link">
-                <div class="sl-menu-item">
-                    <i class="menu-item-icon ion-ios-pie-outline tx-20"></i>
-                    <span class="menu-item-label">Reserved</span>
-                    <i class="menu-item-arrow fa fa-angle-down"></i>
-                </div><!-- menu-item -->
-            </a><!-- sl-menu-link -->
-            <ul class="sl-menu-sub nav flex-column">
-                <li class="nav-item"><a href="chart-morris.html" class="nav-link">Morris Charts</a></li>
-                <li class="nav-item"><a href="chart-flot.html" class="nav-link">Flot Charts</a></li>
-                <li class="nav-item"><a href="chart-chartjs.html" class="nav-link">Chart JS</a></li>
-                <li class="nav-item"><a href="chart-rickshaw.html" class="nav-link">Rickshaw</a></li>
-                <li class="nav-item"><a href="chart-sparkline.html" class="nav-link">Sparkline</a></li>
-            </ul>
+
         </div><!-- sl-sideleft-menu -->
 
         <br>
@@ -206,14 +193,14 @@
                     </div><!-- dropdown-menu -->
                 </div><!-- dropdown -->
             </nav>
-            <div class="navicon-right">
+            {{-- <div class="navicon-right">
                 <a id="btnRightMenu" href="" class="pos-relative">
                     <i class="icon ion-ios-bell-outline"></i>
                     <!-- start: if statement -->
                     <span class="square-8 bg-danger"></span>
                     <!-- end: if statement -->
                 </a>
-            </div><!-- navicon-right -->
+            </div><!-- navicon-right --> --}}
         </div><!-- sl-header-right -->
     </div><!-- sl-header -->
     <!-- ########## END: HEAD PANEL ########## -->
@@ -236,13 +223,13 @@
     <script src="{{asset('dashboard_asset')}}/lib/popper.js/popper.js"></script>
     <script src="{{asset('dashboard_asset')}}/lib/bootstrap/bootstrap.js"></script>
     <script src="{{asset('dashboard_asset')}}/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
-    <script src="{{asset('dashboard_asset')}}/lib/datatables/jquery.dataTables.js"></script>
-    <script src="{{asset('dashboard_asset')}}/lib/datatables-responsive/dataTables.responsive.js"></script>
     <script src="{{asset('dashboard_asset')}}/lib/highlightjs/highlight.pack.js"></script>
     <script src="{{asset('dashboard_asset')}}/lib/chart.js/Chart.js"></script>
+    {{-- <script src="{{asset('dashboard_asset')}}/js/chart.chartjs.js"></script> --}}
+    <script src="{{asset('dashboard_asset')}}/lib/datatables/jquery.dataTables.js"></script>
+    <script src="{{asset('dashboard_asset')}}/lib/datatables-responsive/dataTables.responsive.js"></script>
 
     <script src="{{asset('dashboard_asset')}}/js/starlight.js"></script>
-    <script src="{{asset('dashboard_asset')}}/js/chart.chartjs.js"></script>
 
     @yield('script')
 

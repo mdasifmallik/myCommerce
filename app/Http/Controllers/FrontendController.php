@@ -81,7 +81,7 @@ class FrontendController extends Controller
     public function blog_posts()
     {
         return view('frontend.blog', [
-            'blog_posts' => Blog::paginate(9)
+            'blog_posts' => Blog::with('user')->paginate(9)
         ]);
     }
 

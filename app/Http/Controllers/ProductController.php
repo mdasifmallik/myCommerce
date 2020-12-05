@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('admin.product.index',[
+        return view('admin.product.index', [
             "active_categories" => Category::all(),
             "products" => Product::all()
         ]);
@@ -44,28 +44,28 @@ class ProductController extends Controller
      */
     public function store(ProductForm $request)
     {
-        $product_id = Product::insertGetId($request->except('_token','product_thumbnail_photo','product_multiple_photo') + [
+        $product_id = Product::insertGetId($request->except('_token', 'product_thumbnail_photo', 'product_multiple_photo') + [
             'created_at' => Carbon::now(),
-            'slug' => Str::slug($request->product_name."-".Str::random(5))
+            'slug' => Str::slug($request->product_name . "-" . Str::random(5))
         ]);
 
-        if($request->hasFile('product_thumbnail_photo')){
+        if ($request->hasFile('product_thumbnail_photo')) {
             $photo = $request->file('product_thumbnail_photo');
-            $photo_name = $product_id.".".$photo->getClientOriginalExtension();
-            $photo_location = 'public/uploads/product_photos/'.$photo_name;
-            Image::make($photo)->fit(600,622)->save(base_path($photo_location));
+            $photo_name = $product_id . "." . $photo->getClientOriginalExtension();
+            $photo_location = 'public/uploads/product_photos/' . $photo_name;
+            Image::make($photo)->fit(600, 622)->save(base_path($photo_location));
 
             Product::findOrFail($product_id)->update([
                 'product_thumbnail_photo' => $photo_name
             ]);
         }
 
-        if($request->hasFile('product_multiple_photo')){
+        if ($request->hasFile('product_multiple_photo')) {
             $flag = 1;
-            foreach($request->file('product_multiple_photo') as $single_photo){
-                $photo_name = $product_id."-".$flag++.".".$single_photo->getClientOriginalExtension();
-                $photo_location = 'public/uploads/product_photos/'.$photo_name;
-                Image::make($single_photo)->fit(600,622)->save(base_path($photo_location));
+            foreach ($request->file('product_multiple_photo') as $single_photo) {
+                $photo_name = $product_id . "-" . $flag++ . "." . $single_photo->getClientOriginalExtension();
+                $photo_location = 'public/uploads/product_photos/' . $photo_name;
+                Image::make($single_photo)->fit(600, 622)->save(base_path($photo_location));
 
                 Product_image::insert([
                     'product_id' => $product_id,
@@ -74,7 +74,7 @@ class ProductController extends Controller
             }
         }
 
-        return back()->with('success_status','New Product added successfully!');
+        return back()->with('success_status', 'New Product added successfully!');
     }
 
     /**
@@ -85,7 +85,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('admin.product.show',[
+        return view('admin.product.show', [
             "active_categories" => Category::all(),
             "product" => $product
         ]);
@@ -99,7 +99,14 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $photo = Product_image::findOrFail($id);
+
+        $photo_location = 'public/uploads/product_photos/' . $photo->image_name;
+        unlink(base_path($photo_location));
+
+        $photo->forceDelete();
+
+        return back();
     }
 
     /**
@@ -109,10 +116,50 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductForm $request,Product $product)
+    public function update(ProductForm $request, Product $product)
     {
-        $product->update($request->except('_token','_method'));
-        return back()->with('success_status','Product edited successfully!');
+        $product->update($request->except('_token', '_method', 'product_thumbnail_photo', 'product_multiple_photo'));
+        $product_id = $product->id;
+
+        if ($request->hasFile('product_thumbnail_photo')) {
+            $old_photo = $product->product_thumbnail_photo;
+            // return $old_photo;
+
+            if ($old_photo != 'default_product_thumbnail_photo.png') {
+                $old_photo_location = 'public/uploads/product_photos/' . $old_photo;
+                unlink(base_path($old_photo_location));
+            }
+
+            $photo = $request->file('product_thumbnail_photo');
+            $photo_name = $product_id . "." . $photo->getClientOriginalExtension();
+            $photo_location = 'public/uploads/product_photos/' . $photo_name;
+            Image::make($photo)->fit(600, 622)->save(base_path($photo_location));
+
+            Product::findOrFail($product_id)->update([
+                'product_thumbnail_photo' => $photo_name
+            ]);
+        }
+
+        if ($request->hasFile('product_multiple_photo')) {
+            $flag = 1;
+            foreach ($product->product_images as $product_image) {
+                $flag = explode("-", $product_image->image_name)[1];
+                $flag = explode(".", $flag)[0];
+                $flag++;
+            }
+
+            $photo = $request->file('product_multiple_photo');
+            $photo_name = $product_id . "-" . $flag . "." . $photo->getClientOriginalExtension();
+            $photo_location = 'public/uploads/product_photos/' . $photo_name;
+            Image::make($photo)->fit(600, 622)->save(base_path($photo_location));
+
+            Product_image::insert([
+                'product_id' => $product_id,
+                'image_name' => $photo_name
+            ]);
+        }
+
+        return back()->with('success_status', 'Product edited successfully!');
     }
 
     /**

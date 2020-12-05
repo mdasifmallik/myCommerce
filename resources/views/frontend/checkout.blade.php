@@ -1,7 +1,7 @@
 @extends('layouts.frontend_app')
 
 @section('title')
-{{env("APP_NAME")}} | Checkout
+{{config('app.name')}} | Checkout
 @endsection
 
 

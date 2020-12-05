@@ -1,3 +1,6 @@
+@php
+$contact_info = contact_info();
+@endphp
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -66,8 +69,8 @@
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <ul class="d-flex header-contact">
-                            <li><i class="fa fa-phone"></i> {{contact_info()->phone}}</li>
-                            <li><i class="fa fa-envelope"></i> {{contact_info()->email}}</li>
+                            <li><i class="fa fa-phone"></i> {{$contact_info->phone}}</li>
+                            <li><i class="fa fa-envelope"></i> {{$contact_info->email}}</li>
                         </ul>
                     </div>
                     <div class="col-md-6 col-12">
@@ -104,13 +107,18 @@
                         <nav class="mainmenu">
                             <ul class="d-flex">
                                 <li class="@yield('home')"><a href="{{url('/')}}">Home</a></li>
-                                <li><a href="about.html">About</a></li>
+                                <li><a href="{{ url('about') }}">About</a></li>
                                 <li class="@yield('shop')">
                                     <a href="javascript:void(0);">Shop({{numberofproducts()}}) <i
                                             class="fa fa-angle-down"></i></a>
                                     <ul class="dropdown_style">
                                         <li class="@yield('shop_page')"><a href="{{route('shop_page','all')}}">All
                                                 Products</a></li>
+                                        @foreach (get_categories() as $category)
+                                        <li class="@yield('shop_page')"><a
+                                                href="{{route('shop_page',$category->id)}}">{{$category->category_name}}</a>
+                                        </li>
+                                        @endforeach
                                     </ul>
                                 </li>
                                 <li>
@@ -234,8 +242,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     @error('newsletter_email')
-                        <script>window.location.hash = '#newsletter_section';</script>
-                        <div class="alert alert-danger">{{ $message }}</div>
+                    <script>
+                        window.location.hash = '#newsletter_section';
+
+                    </script>
+                    <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                     @if (session('success_message'))
                     <div class="alert alert-success" role="alert">
@@ -286,25 +297,23 @@
                     <div class="col-lg-2 col-md-3 col-sm-12">
                         <div class="footer-icon">
                             <ul class="d-flex">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://twitter.com/"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-8 col-sm-12">
                         <div class="footer-content">
-                            <p>On the other hand, we denounce with righteous indignation and dislike men who are so
-                                beguiled and demoralized by the charms of pleasure righteous indignation and dislike</p>
+                            <p>This eCommerce site is fake! It was made just for testing purposes only. You won't be able to buy any prouducts in reality!</p>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-8 col-sm-12">
                         <div class="footer-adress">
                             <ul>
-                                <li><a href="#"><span>Email:</span> {{contact_info()->email}}</a></li>
-                                <li><a href="#"><span>Tel:</span> {{contact_info()->phone}}</a></li>
-                                <li><a href="#"><span>Adress:</span> {{contact_info()->address}}</a></li>
+                                <li><a href="#"><span>Email:</span> {{$contact_info->email}}</a></li>
+                                <li><a href="#"><span>Tel:</span> {{$contact_info->phone}}</a></li>
+                                <li><a href="#"><span>Adress:</span> {{$contact_info->address}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -321,7 +330,7 @@
     </div>
     <!-- .footer-area end -->
     <!-- Modal area start -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1">
+    {{-- <div class="modal fade" id="exampleModalCenter" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -370,7 +379,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Modal area start -->
     <!-- jquery latest version -->
     <script src="{{asset('frontend_asset')}}/js/vendor/jquery-2.2.4.min.js"></script>
@@ -405,18 +414,23 @@
     <!-- sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa777092c3789c4"></script>
+
+
     <script>
         const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
         })
+
     </script>
 
     @yield('script')

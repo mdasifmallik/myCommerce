@@ -1,7 +1,7 @@
 @extends('layouts.frontend_app')
 
 @section('title')
-Blog | {{env("APP_NAME")}}
+Blog | {{config('app.name')}}
 @endsection
 
 @section('blog_posts')

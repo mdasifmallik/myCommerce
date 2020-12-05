@@ -1,5 +1,8 @@
 @extends('layouts.frontend_app')
 
+@section('title')
+{{config('app.name')}} | {{$product_info->product_name}}
+@endsection
 
 @section('frontend_content')
 
@@ -56,8 +59,12 @@
                         <span class="pull-left">${{$product_info->product_price}}</span>
                         <ul class="rating pull-right">
                             @if ($product_info->reviews)
-                            @for ($i = 1; $i <= $product_info->stars/$product_info->reviews; $i++)
+                            @for ($i = $product_info->stars/$product_info->reviews; $i >= 0; $i--)
+                                @if ($i>0 && $i<1)
+                                <li><i class="fa fa-star-half-o"></i></li>
+                                @elseif($i>0)
                                 <li><i class="fa fa-star"></i></li>
+                                @endif
                             @endfor
                             @endif
                             <li>({{ $product_info->reviews }} Customar Review)</li>
@@ -82,14 +89,10 @@
                         <li>Categories:</li>
                         <li><a href="#">{{$product_info->category->category_name}}</a></li>
                     </ul>
-                    <ul class="socil-icon">
-                        <li>Share :</li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    </ul>
+
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_share_toolbox"></div>
+
                 </div>
             </div>
         </div>

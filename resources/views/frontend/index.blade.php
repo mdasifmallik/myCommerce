@@ -2,7 +2,7 @@
 
 
 @section('title')
-{{env("APP_NAME")}} | Homepage
+{{config('app.name')}} | Homepage
 @endsection
 
 @section('home')
@@ -19,7 +19,7 @@ active
             @foreach ($banners as $banner)
             <div class="swiper-slide overlay">
                 <div class="single-slider slide-inner"
-                    style="background: url({{asset('uploads/banner_photos/'.$banner->banner_photo)}})">
+                    style="background: url({{asset('uploads/banner_photos/'.$banner->banner_photo)}}); background-size: cover">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12 col-lg-9 col-12">
@@ -88,8 +88,7 @@ active
                         <img src="{{asset('uploads/product_photos/'.$best_seller_product->product_thumbnail_photo)}}" alt="">
                         <div class="product-icon flex-style">
                             <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalCenter"
-                                        href="{{ route('product_details',$best_seller_product->slug) }}"><i class="fa fa-eye"></i></a></li>
+                                <li><a href="{{ route('product_details',$best_seller_product->slug) }}"><i class="fa fa-eye"></i></a></li>
                                 <li><a onclick="addToCart({{ $best_seller_product->id }})"><i class="fa fa-shopping-bag"></i></a></li>
                             </ul>
                         </div>
@@ -101,8 +100,12 @@ active
                         </p>
                         <ul class="pull-right d-flex">
                             @if ($best_seller_product->reviews)
-                            @for ($i = 1; $i <= $best_seller_product->stars/$best_seller_product->reviews; $i++)
+                            @for ($i = $best_seller_product->stars/$best_seller_product->reviews; $i >= 0; $i--)
+                                @if ($i>0 && $i<1)
+                                <li><i class="fa fa-star-half-o"></i></li>
+                                @elseif($i>0)
                                 <li><i class="fa fa-star"></i></li>
+                                @endif
                             @endfor
                             @endif
                             {{-- <li><i class="fa fa-star-half-o"></i></li> --}}
@@ -134,24 +137,24 @@ active
                         <img src="{{asset('uploads/product_photos/'.$product->product_thumbnail_photo)}}" alt="">
                         <div class="product-icon flex-style">
                             <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalCenter"
-                                        href="{{ route('product_details',$product->slug) }}"><i class="fa fa-eye"></i></a></li>
+                                <li><a href="{{ route('product_details',$product->slug) }}"><i class="fa fa-eye"></i></a></li>
                                 <li><a onclick="addToCart({{ $product->id }})"><i class="fa fa-shopping-bag"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="product-content">
                         <h3><a href="{{ route('product_details',$product->slug) }}">{{$product->product_name}}</a></h3>
-                        <p class="pull-left">${{$product->product_price}}
-
-                        </p>
+                        <p class="pull-left">${{$product->product_price}}</p>
                         <ul class="pull-right d-flex">
                             @if ($product->reviews)
-                            @for ($i = 1; $i <= $product->stars/$product->reviews; $i++)
+                            @for ($i = $product->stars/$product->reviews; $i >= 0; $i--)
+                                @if ($i>0 && $i<1)
+                                <li><i class="fa fa-star-half-o"></i></li>
+                                @elseif($i>0)
                                 <li><i class="fa fa-star"></i></li>
+                                @endif
                             @endfor
                             @endif
-                                {{-- <li><i class="fa fa-star-half-o"></i></li> --}}
                         </ul>
                     </div>
                 </div>

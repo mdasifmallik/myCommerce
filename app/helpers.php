@@ -20,3 +20,7 @@ function contact_info()
 {
     return App\Contactinfo::findOrFail(1);
 }
+
+function get_categories(){
+    return App\Category::all();
+}

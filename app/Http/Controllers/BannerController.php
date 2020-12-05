@@ -63,7 +63,7 @@ class BannerController extends Controller
             $photo = $request->file('banner_photo');
             $photo_name = $banner_id . "." . $photo->getClientOriginalExtension();
             $photo_location = 'public/uploads/banner_photos/' . $photo_name;
-            Image::make($photo)->fit(1920, 1080)->save(base_path($photo_location));
+            Image::make($photo)->fit(960, 540)->save(base_path($photo_location));
 
             Banner::findOrFail($banner_id)->update([
                 'banner_photo' => $photo_name
@@ -121,7 +121,7 @@ class BannerController extends Controller
             $photo = $request->file('banner_photo');
             $photo_name = $banner->id . "." . $photo->getClientOriginalExtension();
             $photo_location = 'public/uploads/banner_photos/' . $photo_name;
-            Image::make($photo)->fit(1920, 1080)->save(base_path($photo_location));
+            Image::make($photo)->fit(960, 540)->save(base_path($photo_location));
 
             Banner::findOrFail($banner->id)->update([
                 'banner_photo' => $photo_name

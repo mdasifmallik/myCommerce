@@ -1,7 +1,7 @@
 @extends('layouts.frontend_app')
 
 @section('title')
-{{env("APP_NAME")}} | Login
+{{config('app.name')}} | Login
 @endsection
 
 

@@ -8,6 +8,10 @@ active
 active
 @endsection
 
+@section('title')
+{{config('app.name')}} | Shop
+@endsection
+
 
 @section('frontend_content')
 <!-- .breadcumb-area start -->
@@ -51,7 +55,7 @@ active
         <div class="tab-content">
             <div class="tab-pane {{($selected_category == "all")?"active":""}}" id="all">
                 <ul class="row">
-                    @foreach ($all_products as $product)
+                    @forelse ($all_products as $product)
                     <li class="col-xl-3 col-lg-4 col-sm-6 col-12 {{($loop->index>3)?"moreload":""}}">
                         <div class="product-wrap">
                             <div class="product-img">
@@ -75,16 +79,21 @@ active
                                 </p>
                                 <ul class="pull-right d-flex">
                                     @if ($product->reviews)
-                                    @for ($i = 1; $i <= $product->stars/$product->reviews; $i++)
+                                    @for ($i = $product->stars/$product->reviews; $i >= 0; $i--)
+                                        @if ($i>0 && $i<1)
+                                        <li><i class="fa fa-star-half-o"></i></li>
+                                        @elseif($i>0)
                                         <li><i class="fa fa-star"></i></li>
+                                        @endif
                                     @endfor
                                     @endif
-                                    {{-- <li><i class="fa fa-star-half-o"></i></li> --}}
                                 </ul>
                             </div>
                         </div>
                     </li>
-                    @endforeach
+                    @empty
+                    <h3 class="text-danger m-auto">Sorry! No products found!</h3>
+                    @endforelse
                     <li class="col-12 text-center">
                         <a class="loadmore-btn" href="javascript:void(0);">Load More</a>
                     </li>
