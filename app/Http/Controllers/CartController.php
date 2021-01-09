@@ -102,7 +102,7 @@ class CartController extends Controller
 
         $string = NULL;
         $subtotol = 0;
-        foreach (cart_items() as $cart_item) {
+        foreach (Cart::where('generated_cart_id', $generated_cart_id)->get() as $cart_item) {
             $string .= "<li class=\"cart-items\"><div class=\"cart-img\"><img width=\"60\"src=\"" . asset('uploads/product_photos/' . $cart_item->product->product_thumbnail_photo) . "\"></div>
             <div class=\"cart-content\"><a href=\"{{route('product_details'," . $cart_item->product->slug . ")}}\">" . $cart_item->product->product_name . "</a><span>QTY : " . $cart_item->product_quantity . "</span>
             <p>$" . $cart_item->product->product_price * $cart_item->product_quantity . "</p><a href=\"" . route('cart.remove', $cart_item->id) . "\"><i class=\"fa fa-times\"></i></a></div></li>";
@@ -113,7 +113,7 @@ class CartController extends Controller
         $string .= "<li>Subtotol: <span id=\"cart_total\" class=\"pull-right\">$" . $subtotol . "</span></li>
         <li><a class=\"btn btn-danger\" href=\"" . route('cart.index') . "\">Check Out</a></li>";
 
-        return [cart_count(), $string];
+        return [Cart::where('generated_cart_id', $generated_cart_id)->count(), $string];
     }
 
 

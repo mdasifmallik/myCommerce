@@ -12,6 +12,7 @@ use App\Order_detail;
 use App\Product;
 use App\Shipping;
 use Carbon\Carbon;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -132,7 +133,8 @@ class CheckoutController extends Controller
             session(['order_id_from_checkout_page' => $order_id]);
             return redirect('/stripe');
         } else {
-            return redirect('/customer/home');
+            Session::flash('success', 'Product bought successfull!');
+            return redirect('/cart_main');
         }
     }
 

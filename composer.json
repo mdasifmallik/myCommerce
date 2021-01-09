@@ -18,7 +18,7 @@
         "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "stripe/stripe-php": "^7.46"
+        "stripe/stripe-php": "^7.66"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",

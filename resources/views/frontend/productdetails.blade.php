@@ -296,6 +296,7 @@
                     icon: 'success',
                     title: 'Added to cart successfully!'
                     })
+                    console.log(data);
                     $('#cart_count').text(data[0]);
                     $('#cart_content').html(data[1]);
                 }

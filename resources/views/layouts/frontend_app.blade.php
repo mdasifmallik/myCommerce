@@ -190,36 +190,23 @@ $contact_info = contact_info();
                         <div class="col-12 d-block d-lg-none">
                             <ul class="metismenu">
                                 <li><a href="{{url('/')}}">Home</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Shop </a>
+                                <li><a href="{{url('about')}}">About</a></li>
+                                <li class="@yield('shop') sidemenu-items">
+                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Shop({{numberofproducts()}})</a>
                                     <ul aria-expanded="false">
-                                        <li><a href="shop.html">Shop Page</a></li>
-                                        <li><a href="single-product.html">Product Details</a></li>
-                                        <li><a href="cart.html">Shopping cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                        <li class="@yield('shop_page')"><a href="{{route('shop_page','all')}}">All
+                                                Products</a></li>
+                                        @foreach (get_categories() as $category)
+                                        <li class="@yield('shop_page')"><a
+                                                href="{{route('shop_page',$category->id)}}">{{$category->category_name}}</a>
+                                        </li>
+                                        @endforeach
                                     </ul>
                                 </li>
-                                <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Pages </a>
-                                    <ul aria-expanded="false">
-                                        <li><a href="about.html">About Page</a></li>
-                                        <li><a href="single-product.html">Product Details</a></li>
-                                        <li><a href="cart.html">Shopping cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                    </ul>
+                                <li>
+                                    <a class="@yield('blog_posts')"><a href="{{route('blog_posts')}}">Blog</a>
                                 </li>
-                                <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Blog</a>
-                                    <ul aria-expanded="false">
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="{{url('contact')}}">Contact</a></li>
+                                <li class="@yield('contact')"><a href="{{url('contact')}}">Contact</a></li>
                             </ul>
                         </div>
                     </div>

@@ -85,7 +85,7 @@ active
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
-                        <img src="{{asset('uploads/product_photos/'.$best_seller_product->product_thumbnail_photo)}}" alt="">
+                        <img src="{{asset('uploads/product_photos/'.$best_seller_product->product_thumbnail_photo)}}" loading="lazy" alt="">
                         <div class="product-icon flex-style">
                             <ul>
                                 <li><a href="{{ route('product_details',$best_seller_product->slug) }}"><i class="fa fa-eye"></i></a></li>
@@ -134,7 +134,7 @@ active
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12 {{($loop->index>3)?"moreload":""}}">
                 <div class="product-wrap">
                     <div class="product-img">
-                        <img src="{{asset('uploads/product_photos/'.$product->product_thumbnail_photo)}}" alt="">
+                        <img src="{{asset('uploads/product_photos/'.$product->product_thumbnail_photo)}}" loading="lazy" alt="">
                         <div class="product-icon flex-style">
                             <ul>
                                 <li><a href="{{ route('product_details',$product->slug) }}"><i class="fa fa-eye"></i></a></li>
@@ -188,7 +188,7 @@ active
                             <p>{{$testimonial->client_about}}</p>
                         </div>
                         <div class="test-img2">
-                            <img src="{{asset('uploads/testimonial_photos/'.$testimonial->client_photo)}}" alt="">
+                            <img src="{{asset('uploads/testimonial_photos/'.$testimonial->client_photo)}}" loading="lazy" alt="">
                         </div>
                     </div>
                     @endforeach
