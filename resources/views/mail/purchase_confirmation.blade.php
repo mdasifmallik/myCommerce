@@ -34,6 +34,23 @@
                         <td>{{ $final_order->product->product_price }}</td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td scope="row">#</td>
+                        <td>Sub Total</td>
+                        <td>{{ $final_order_info->sub_total }}</td>
+                    </tr>
+                    @if($final_order_info->coupon_name)
+                    <tr>
+                        <td scope="row">#</td>
+                        <td>Coupon</td>
+                        <td>{{ $final_order_info->coupon_name }}</td>
+                    </tr>
+                    @endif
+                    <tr>
+                        <td scope="row">#</td>
+                        <td>Total</td>
+                        <td>{{ $final_order_info->total }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

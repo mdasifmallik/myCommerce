@@ -1,6 +1,10 @@
 <?php
 
+use App\Mail\PurchaseConfirm;
+use App\Order;
+use App\Order_detail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -135,3 +139,11 @@ Route::get('login/github/callback', 'GithubController@handleProviderCallback');
 //Stripe Controller
 Route::get('stripe', 'StripePaymentController@stripe')->name('stripe');
 Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post');
+
+
+Route::get('mail', function () {
+    $order = Order::findOrFail(19);
+    $order_details = Order_detail::where('order_id', 19)->get();
+
+    Mail::to("mdasifmallik2@gmail.com")->send(new PurchaseConfirm($order, $order_details));
+});

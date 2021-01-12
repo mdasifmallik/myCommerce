@@ -125,9 +125,10 @@ class CheckoutController extends Controller
             $cart_item->forceDelete();
         }
 
+        $order = Order::findOrFail($order_id);
         $order_details = Order_detail::where('order_id', $order_id)->get();
 
-        Mail::to($request->email)->send(new PurchaseConfirm($order_details));
+        Mail::to($request->email)->send(new PurchaseConfirm($order, $order_details));
 
         if ($request->payment_option == 2) {
             session(['order_id_from_checkout_page' => $order_id]);
